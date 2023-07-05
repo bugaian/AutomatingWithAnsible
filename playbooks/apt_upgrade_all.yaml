@@ -1,0 +1,18 @@
+# Simple playbook to perform apt upgrades
+# ansible-playbook -i hosts --private-key .ssh/id_rsa -u root apt_upgrade_all.yaml
+
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Update cache & Full system update
+      apt:
+        update_cache: yes
+        upgrade: dist
+        cache_valid_time: 3600
+        force_apt_get: yes
+      register: upgrade_result
+
+    - debug:
+        var: upgrade_result
